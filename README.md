@@ -1,8 +1,8 @@
 # Massa-Node-Setup
 
-Massa-Node sistem Servisi Olarak Kurulumu ve Roll Otomasyonu. Kurulum Ubuntu 22.04 amd64 ve arm64 versiyonları için geçerlidir.
+Massa-Node Sistem Servisi Olarak Kurulumu ve Roll Otomasyonu. Kurulum Ubuntu 22.04 amd64 ve arm64 versiyonları için geçerlidir.
 
-Öncelikle Home lokasyonuna dönelim ve en güncel node versiyonunu indirelim ve arşivden çıkartalım. Ardindan arşiv dosyasını silelim. https://github.com/massalabs/massa/releases adresinden kontrol edebilirsiniz.
+Öncelikle Home lokasyonuna dönelim ve sistemimize uygun en güncel node versiyonunu indirelim ve arşivden çıkartalım. Ardindan arşiv dosyasını silelim. https://github.com/massalabs/massa/releases adresinden kontrol edebilirsiniz.
 ```
 cd
 wget https://github.com/massalabs/massa/releases/download/MAIN.1.0/massa_MAIN.1.0_release_linux.tar.gz
@@ -10,7 +10,7 @@ tar -xvf massa_MAIN.1.0_release_linux.tar.gz
 rm massa_MAIN.1.0_release_linux.tar.gz
 ```
 
-Bir defaya mahsus önce cüzdanımızı import edelim. Clienti ilk çalıştırma esnasında cüzdan şifremizi oluşturalım ve saklayalım.
+Bir defaya mahsus cüzdanımızı import edelim. Clienti ilk çalıştırma esnasında cüzdan şifremizi oluşturalım ve saklayalım.
 ```
 cd massa/massa-client
 ./massa-client -p şifreniz
@@ -19,15 +19,15 @@ wallet_info
 exit
 ```
 
-Cüzdan adresimizi roll otomasyonunda kullanmak üzere not alalım ve yine bir defaya mahsus olmak üzere config.toml dosyamızı oluşturalım. Bunun için sunucunun veya ev internetinin public ip'sine ihtiyacımız var. `sudo nano ~/massa/massa-node/config/config.toml` komutu ile dosyamızı oluşturup aşağıdaki kısmı ipmizi yazarak içerisine yapıştıralım.
+Cüzdan adresimizi roll otomasyonunda kullanmak üzere not alalım ve yine bir defaya mahsus olmak üzere config.toml dosyamızı oluşturalım. Bunun için sunucunun veya ev internetinin public ip'sine ihtiyacımız var. `sudo nano ~/massa/massa-node/config/config.toml` komutu ile dosyamızı oluşturup aşağıdaki kısmı ip'mizi yazarak içerisine yapıştıralım.
 ```
 [protocol]
 routable_ip="xx.xx.xx.xx"
 ```
 
-Massa-Node düzgün çalışmak için 31244 ve 31245 nomaralı portların açık olmasına ihtiyaç duyar. Kullandığınız sistemin güvenlik duvarından ve sunucu sağlayıcınızın arayüzünden bu portları açmanız gerekebilir. Bunun için lütfen sağlayıcınızın ve sisteminizin kaynaklarına bakın.
+Massa-Node düzgün çalışmak için `31244` ve `31245` numaralı portların açık olmasına ihtiyaç duyar. Kullandığınız sistemin güvenlik duvarından ve sunucu sağlayıcınızın arayüzünden bu portları açmanız gerekebilir. Bunun için lütfen sağlayıcınızın ve sisteminizin kaynaklarına bakın.
 
-Daha sonrasında service dosyamızı oluşturalım bunun için, `sudo nano /etc/systemd/system/massad.service` komutuyla servis dosyamızı oluşturarak aşağıdaki kısmı User, WorkingDirectory ve ExecStart değişkenlerini sisteminize göre ayarlayarak yapıştırın (benim sistemimde kullanıcı ismi ubuntu. Bu durumda [USER] yazan yerleri ubuntu ile değiştirmek yeterli oldu). ExecStart satırında node için bir şifre belirlemeniz gerekiyor cüzdan şifresiyile aynı olabilir dilediğiniz bir şifreyi oraya girin ve şifrenizi saklayın.
+Daha sonrasında service dosyamızı oluşturalım bunun için, `sudo nano /etc/systemd/system/massad.service` komutuyla servis dosyamızı oluşturarak aşağıdaki kısmı; User, WorkingDirectory ve ExecStart değişkenlerini sisteminize göre ayarlayarak yapıştırın (benim sistemimde kullanıcı ismi ubuntu. Bu durumda [USER] yazan yerleri ubuntu ile değiştirmek yeterli oldu). ExecStart satırında node için bir şifre belirlemeniz gerekiyor cüzdan şifresiyile aynı olabilir dilediğiniz bir şifreyi oraya girin ve şifrenizi saklayın.
 ```
 [Unit]
 	Description=Massa Node
@@ -54,7 +54,7 @@ Logları kontrol etmek için:
 sudo journalctl -u massad -f -o cat
 ```
 
-Client üzerinden de in-out connectionları kontrol edelim zamanla artması gerekiyor ayrıca get_status komutunun en üstünde node ip değişkeni karşısına kendi ip'miniz gelip gelmediğine de bakalım.
+Client üzerinden de in-out connectionları kontrol edelim zamanla artması gerekiyor ayrıca `get_status` komutunun en üstünde node ip değişkeni karşısına kendi ip'miniz gelip gelmediğine de bakalım.
 ```
 cd ~/massa/massa-client
 ./massa-client -p şifreniz
@@ -71,7 +71,7 @@ Aşağıdaki komut ile de bakiyenize göre istediğiniz miktarda roll alabilirsi
 buy_rolls cüzdan_adtesi roll_adedi 0
 ```
 
-# Node kurulumu tamamlanmıştır. Opsiyonel olarak roll sayısını otomatik kontrol eden bir script hazırladım isteyenler bunu da devreye alabilir. Birçok kez test ettim herhangi bir problem göredim. Lütfen siz de inceleyin eksik veya yanlış gördüğünüz yerlerde katkıda bulunmaktan çekinmeyin. Script bir probleme yol açarsa sorumluluk size aittir.
+# Node kurulumu tamamlanmıştır. Opsiyonel olarak roll sayısını otomatik kontrol eden bir script hazırladım isteyenler bunu da devreye alabilir. Birçok kez test ettim herhangi bir sorun yaşamadım. Lütfen siz de inceleyin eksik veya yanlış gördüğünüz yerlerde katkıda bulunmaktan çekinmeyin. Script bir probleme yol açarsa sorumluluk size aittir.
 
 Aşağıdaki scriptte massa-client yolu (Your path to massa-client), cüzdan şifresi (Your wallet password), cüzdan adresi (Your wallet address) değişkenlerini kendi sisteminiz göre ayarlayın. Bu kurulumu takip ettiyseniz path değişkenini değiştirmenize gerek yok. `target_roll_amount` değişkeni hedef roll sayısıdır eğer buraya 10 yazarsanız script 10'dan fazla roll almayacaktır ve bir sebeple roll'ler satılırsa tekrar 10 roll alacaktır. Bu değişkene 0 değerini atarsanız script alabildiği kadar roll alacaktır ve bakiye ne zaman 100'ü geçerse veya kilitli coinlerinizin bir miktarının kilidi açılırsa yine alabildiği kadar roll almaya devam edecektir. Script dosyasını oluşturalım ve düzenleyerek aşağıdaki kısmı yapıştıralım `sudo nano ~/rollCheck.sh`
 ```
@@ -146,11 +146,11 @@ sudo chmod +x rollCheck.sh
 ```
 komutu ile bu scripti çalıştırılabilir hale getirelim.
 
-Scriptin bir döngü halinde çalışması için bir cronjob oluşturmamız gerekiyor. Scripti home yolunda oluşturduk tam dosya yolunu öğrenmek için scriptin olduğu klasörde `pwd` komutunu kullanabilirsiniz. Cronjob için `crontab -e` komutunu girelim ve en alta aşağıdaki komutu girelim.
+Scriptin bir döngü halinde çalışması için bir cronjob oluşturmamız gerekiyor. Scripti home yolunda oluşturduk tam dosya yolunu öğrenmek için scriptin olduğu klasörde `pwd` komutunu kullanabilirsiniz. Cronjob için `crontab -e` komutunu girelim ve en alta aşağıdaki komutu ekleyelim.
 ```
 */5 * * * * /sizin/dosya/yolunuz/rollCheck.sh >/dev/null 2>&1
 ```
-Buradaki 5 sayısı 5 dakikayı temsil ediyor yani 5 dakikada bir script çalışacak ve kontrol edecek dilerseniz 15 veya 30 dakikalık koltroller de oluşturabilirsiniz 5 uygun olur diye düşünüyorum. Script kendi bulunduğu lokasyona rollCheckScript.log isimli bir dosya oluşturacak bu dosyadan hangi satte ne yaptığını kontrol edebilirsiniz.
+Buradaki 5 sayısı 5 dakikayı temsil ediyor yani 5 dakikada bir script çalışacak ve kontrol edecek dilerseniz 15 veya 30 dakikalık kontrol döngüleri de oluşturabilirsiniz 5 uygun olur diye düşünüyorum. Script kendi bulunduğu lokasyona rollCheckScript.log isimli bir dosya oluşturacak bu dosyadan hangi saatte ne yaptığını kontrol edebilirsiniz.
 
 Bu işlem de tamamdır `cd` ile home konumuna dönüp `cat rollCheckScript.log` komutu ile script loglarını kontrol edebilirsiniz tabiki döngü süresi kadar beklemek gerekiyor ilk defaya mahsus. Dilerseniz,
 ```
@@ -158,7 +158,7 @@ Bu işlem de tamamdır `cd` ile home konumuna dönüp `cat rollCheckScript.log` 
 ```
 komutu ile scripti manuel olarak da çalıştırabilirsiniz.
 
-Son olarak eğer evde çalıştırıyorsanız ve ip'niz dinamik ise aşağıdaki scripti oluşturup yine cronjob a ekleyerek sürekli kontrol yapabilirsiniz değiştikçe yeni ip'yi girecektir.
+Son olarak eğer evde çalıştırıyorsanız ve ip'niz dinamik ise aşağıdaki scripti oluşturup yine cronjob'a ekleyerek sürekli kontrol yapabilirsiniz değiştikçe yeni ip'yi girecektir.
 ```
 sudo touch checkPublicIP.sh
 sudo chmod +x checkPublicIP.sh
