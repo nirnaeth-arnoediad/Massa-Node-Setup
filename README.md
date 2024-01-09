@@ -142,7 +142,7 @@ fi
 ```
 Kaydedip çıktıktan sonra
 ```
-sudo chmod +x rollCheck.sh
+sudo chmod +x ~/rollCheck.sh
 ```
 komutu ile bu scripti çalıştırılabilir hale getirelim.
 
