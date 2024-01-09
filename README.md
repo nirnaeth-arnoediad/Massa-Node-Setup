@@ -158,6 +158,8 @@ Bu işlem de tamamdır `cd` ile home konumuna dönüp `cat rollCheckScript.log` 
 ```
 komutu ile scripti manuel olarak da çalıştırabilirsiniz.
 
+# Dinamik IP
+
 Son olarak eğer evde çalıştırıyorsanız ve ip'niz dinamik ise aşağıdaki scripti oluşturup yine cronjob'a ekleyerek sürekli kontrol yapabilirsiniz değiştikçe yeni ip'yi girecektir.
 ```
 sudo touch checkPublicIP.sh
