@@ -1,6 +1,6 @@
 #!/bin/bash
 
-architectureSelector=1 #If your system has arm64 architecture set this to 1. If amd64 leave this as 0. This script assumes user using linux based OS.
+architectureSelector=0 #If your system has arm64 architecture set this to 1. If amd64 leave this as 0. This script assumes user using linux based OS.
 releaseVersionTag=MAIN.2.0 #Enter latest version. You can check and copy latest version tag at https://github.com/massalabs/massa/releases
 sudo systemctl stop massad
 cd
