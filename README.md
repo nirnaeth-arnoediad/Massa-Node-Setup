@@ -213,7 +213,7 @@ sudo nano checkPublicIP.sh
 dinamikIPScript:
 ```
 #!/usr/bin/env bash
-Path=/home/nirneth/massa/massa-node/config
+Path=/home/nirnaeth/massa/massa-node/config # Your config.toml path
 myIP=$(curl -s ident.me)
 nodeIP=$(cat $Path/config.toml | grep "routable_ip" | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|([0-9a-z>
 if [ $myIP == $nodeIP ]
