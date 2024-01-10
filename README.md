@@ -26,7 +26,7 @@ wallet_info
 exit
 ```
 
-Cüzdan adresimizi roll otomasyonunda kullanmak üzere not alalım ve yine bir defaya mahsus olmak üzere config.toml dosyamızı oluşturalım. Bunun için sunucunun veya ev internetinin public ip'sine ihtiyacımız var. `sudo nano ~/massa/massa-node/config/config.toml` komutu ile dosyamızı oluşturup aşağıdaki kısmı ip'mizi yazarak içerisine yapıştıralım.
+Cüzdan adresimizi roll otomasyonunda kullanmak üzere not alalım ve yine bir defaya mahsus olmak üzere config.toml dosyamızı oluşturalım. Bunun için sunucunun veya ev internetinin public ip'sine ihtiyacımız var. `nano ~/massa/massa-node/config/config.toml` komutu ile dosyamızı oluşturup aşağıdaki kısmı ip'mizi yazarak içerisine yapıştıralım.
 ```
 [protocol]
 routable_ip="xx.xx.xx.xx"
@@ -117,7 +117,7 @@ Ne zaman bir güncelleme gelirse `./updateMassa.sh` komutu ile node güncelleyeb
 
 # Node kurulumu tamamlanmıştır. Opsiyonel olarak roll sayısını otomatik kontrol eden bir script hazırladım isteyenler bunu da devreye alabilir. Birçok kez test ettim herhangi bir sorun yaşamadım. Lütfen siz de inceleyin eksik veya yanlış gördüğünüz yerlerde katkıda bulunmaktan çekinmeyin. Script bir probleme yol açarsa sorumluluk size aittir.
 
-Aşağıdaki scriptte massa-client yolu (Your path to massa-client), cüzdan şifresi (Your wallet password), cüzdan adresi (Your wallet address) değişkenlerini kendi sisteminiz göre ayarlayın. Bu kurulumu takip ettiyseniz path değişkenini değiştirmenize gerek yok. `target_roll_amount` değişkeni hedef roll sayısıdır eğer buraya 10 yazarsanız script 10'dan fazla roll almayacaktır ve bir sebeple roll'ler satılırsa tekrar 10 roll alacaktır. Bu değişkene 0 değerini atarsanız script alabildiği kadar roll alacaktır ve bakiye ne zaman 100'ü geçerse veya kilitli coinlerinizin bir miktarının kilidi açılırsa yine alabildiği kadar roll almaya devam edecektir. Script dosyasını oluşturalım ve düzenleyerek aşağıdaki kısmı yapıştıralım `sudo nano ~/rollCheck.sh`
+Aşağıdaki scriptte massa-client yolu (Your path to massa-client), cüzdan şifresi (Your wallet password), cüzdan adresi (Your wallet address) değişkenlerini kendi sisteminiz göre ayarlayın. Bu kurulumu takip ettiyseniz path değişkenini değiştirmenize gerek yok. `target_roll_amount` değişkeni hedef roll sayısıdır eğer buraya 10 yazarsanız script 10'dan fazla roll almayacaktır ve bir sebeple roll'ler satılırsa tekrar 10 roll alacaktır. Bu değişkene 0 değerini atarsanız script alabildiği kadar roll alacaktır ve bakiye ne zaman 100'ü geçerse veya kilitli coinlerinizin bir miktarının kilidi açılırsa yine alabildiği kadar roll almaya devam edecektir. Script dosyasını oluşturalım ve düzenleyerek aşağıdaki kısmı yapıştıralım `nano ~/rollCheck.sh`
 ```
 #!/bin/bash
 
@@ -206,9 +206,9 @@ komutu ile scripti manuel olarak da çalıştırabilirsiniz.
 
 Son olarak eğer evde çalıştırıyorsanız ve ip'niz dinamik ise aşağıdaki scripti oluşturup yine cronjob'a ekleyerek sürekli kontrol yapabilirsiniz değiştikçe yeni ip'yi girecektir.
 ```
-sudo touch checkPublicIP.sh
+touch checkPublicIP.sh
 sudo chmod +x checkPublicIP.sh
-sudo nano checkPublicIP.sh
+nano checkPublicIP.sh
 ```
 dinamikIPScript:
 ```
