@@ -80,7 +80,7 @@ Aşağıdaki scriptte massa-client yolu (Your path to massa-client), cüzdan şi
 # Change to the massa-client directory and specify variables
 cd /$HOME/massa/massa-client/ # Your path to massa-client
 wallet_password=12345 # Your wallet password
-wallet_address=AU173eksDS4ZuQmfWNdNwxAufTHbZLEQHvB8k5Y61o1j48PdQNTb # Your wallet address
+wallet_address=AU1RdSuQrBKVpoyLNjtccZER3jkmHq3WgNQVHFJNqenUaapJeWW2 # Your wallet address
 target_roll_amount=0 # If target roll amount is 0 script try to buy rolls as much as possible
 roll_amount_to_buy=0
 
@@ -111,7 +111,7 @@ fi
 
 # Check roll status with target roll amount
 if [[ "$target_roll_amount" -ne 0 ]]; then
-	if [[ "$candidate_rolls" -ne "$target_roll_amount" ]]; then
+	if [[ "$target_roll_amount" -gt "$candidate_rolls" ]]; then
 		if [[ "$active_rolls" -eq 0 ]]; then
 
 			# Looks like rolls are sold. Re-buying...
@@ -120,10 +120,10 @@ if [[ "$target_roll_amount" -ne 0 ]]; then
 
 		fi
 
-		if [[ "$target_roll_amount" -gt "$candidate_rolls" ]]; then
+		if [[ "$candidate_rolls" -ne 0 ]]; then
 
-			 echo "$(date): Target Roll Amount: $target_roll_amount" >> /$HOME/rollCheckScript.log
-       roll_amount_to_buy="$((target_roll_amount-candidate_rolls))"
+			echo "$(date): Target Roll Amount: $target_roll_amount" >> /$HOME/rollCheckScript.log
+		        roll_amount_to_buy="$((target_roll_amount-candidate_rolls))"
 
 			if [[ "$roll_amount_to_buy" -gt "$possible_rolls" ]]; then
 
@@ -131,7 +131,7 @@ if [[ "$target_roll_amount" -ne 0 ]]; then
 
 			else
 
-				# Increase roll amount to teach target.
+				# Increase roll amount to reach target.
 	   			"./massa-client" -p $wallet_password buy_rolls $wallet_address $roll_amount_to_buy 0
    				echo "$(date): $roll_amount_to_buy Rolls bought!" >> /$HOME/rollCheckScript.log
 
