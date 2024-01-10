@@ -78,6 +78,43 @@ Aşağıdaki komut ile de bakiyenize göre istediğiniz miktarda roll alabilirsi
 buy_rolls cüzdan_adtesi roll_adedi 0
 ```
 
+# Güncelleme
+Bunun için basit bir script hazırladım. Script içerisinde iki değişken mevcut birincisi `architectureSelector` `0` değerini atarsanız `amd64` versiyonu için `1` değerini atarsanız `arm64` için güncelleme yapar. Diğer değişken ise versiyon değişkeni. En güncel versiyonu https://github.com/massalabs/massa/releases adresinde bulabilirsiniz yeşil `latest` yazısının yanındaki release başlığını script içerisinde `releaseVersionTag` karşısına yazın. Şuan için en güncel versiyon `MAIN.2.0`. Aşağıdaki komutlarla script dosyasını oluşturun ve içeriği yapıştırın.
+```
+touch updateMassa.sh
+sudo chmod +x updateMassa.sh
+nano updateMassa.sh
+```
+updateMassa.sh
+```
+#!/bin/bash
+
+architectureSelector=0 #If your system has arm64 architecture set this to 1. If amd64 leave this as 0. This script assumes user using linux based OS.
+releaseVersionTag=MAIN.2.0 #Enter latest version. You can check and copy latest version tag at https://github.com/massalabs/massa/releases
+sudo systemctl stop massad
+cd
+mkdir massa-update-temporary-folder
+cd massa-update-temporary-folder
+if [[ "$architectureSelector" -eq 1 ]]; then
+        wget https://github.com/massalabs/massa/releases/download/${releaseVersionTag}/massa_${releaseVersionTag}_release_linux_arm64.tar.gz
+        tar -xvf massa_${releaseVersionTag}_release_linux_arm64.tar.gz
+else
+        wget https://github.com/massalabs/massa/releases/download/${releaseVersionTag}/massa_${releaseVersionTag}_release_linux.tar.gz
+        tar -xvf massa_${releaseVersionTag}_release_linux.tar.gz
+fi
+cd massa/massa-node
+cp massa-node ~/massa/massa-node/
+cd ..
+cd massa-client
+cp massa-client ~/massa/massa-client/
+cd
+sudo rm -rf massa-update-temporary-folder
+sudo systemctl restart massad
+sudo journalctl -u massad -f -o cat
+```
+Ne zaman bir güncelleme gelirse `./updateMassa.sh` komutu ile node güncelleyebilirsiniz bu komut node'u durdurur güncellemeyi yapar ve geri çalıştırır. Sadece bu kurulum ile uyumludur.
+
+
 # Node kurulumu tamamlanmıştır. Opsiyonel olarak roll sayısını otomatik kontrol eden bir script hazırladım isteyenler bunu da devreye alabilir. Birçok kez test ettim herhangi bir sorun yaşamadım. Lütfen siz de inceleyin eksik veya yanlış gördüğünüz yerlerde katkıda bulunmaktan çekinmeyin. Script bir probleme yol açarsa sorumluluk size aittir.
 
 Aşağıdaki scriptte massa-client yolu (Your path to massa-client), cüzdan şifresi (Your wallet password), cüzdan adresi (Your wallet address) değişkenlerini kendi sisteminiz göre ayarlayın. Bu kurulumu takip ettiyseniz path değişkenini değiştirmenize gerek yok. `target_roll_amount` değişkeni hedef roll sayısıdır eğer buraya 10 yazarsanız script 10'dan fazla roll almayacaktır ve bir sebeple roll'ler satılırsa tekrar 10 roll alacaktır. Bu değişkene 0 değerini atarsanız script alabildiği kadar roll alacaktır ve bakiye ne zaman 100'ü geçerse veya kilitli coinlerinizin bir miktarının kilidi açılırsa yine alabildiği kadar roll almaya devam edecektir. Script dosyasını oluşturalım ve düzenleyerek aşağıdaki kısmı yapıştıralım `sudo nano ~/rollCheck.sh`
