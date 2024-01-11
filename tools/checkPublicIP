@@ -2,11 +2,12 @@
 Path=/home/nirnaeth/massa/massa-node/config # Your config.toml path
 myIP=$(curl -s ident.me)
 nodeIP=$(cat $Path/config.toml | grep "routable_ip" | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|([0-9a-z]{4})(:[0-9a-z]{0,4}){1,7}')
-if [ $myIP == $nodeIP ]
+if [ "$myIP" == "$nodeIP" ]
 then 
         echo 0
 else
         sed -i 's/^routable_ip.*/routable_ip="'"${myIP}"'"/' $Path/config.toml
-        echo "$(date): IP Changed! New IP: $myIP" >> /$HOME/log/cron.log
+        echo "$(date): IP Changed! New IP: $myIP" >> /$HOME/IPlogs.log
         sudo systemctl restart massad
-        echo "$(date): Node restarted!" >> /$HOME/log/cron.log
+        echo "$(date): Node restarted!" >> /$HOME/IPlogs.log
+fi
