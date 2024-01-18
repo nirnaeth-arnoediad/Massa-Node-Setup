@@ -6,15 +6,15 @@ Massa-Node Sistem Servisi Olarak Kurulumu ve Roll Otomasyonu. Kurulum Ubuntu 22.
 ```
 For amd64
 cd
-wget https://github.com/massalabs/massa/releases/download/MAIN.2.0/massa_MAIN.2.0_release_linux.tar.gz
-tar -xvf massa_MAIN.2.0_release_linux.tar.gz
-rm massa_MAIN.2.0_release_linux.tar.gz
+wget https://github.com/massalabs/massa/releases/download/MAIN.2.1/massa_MAIN.2.1_release_linux.tar.gz
+tar -xvf massa_MAIN.2.1_release_linux.tar.gz
+rm massa_MAIN.2.1_release_linux.tar.gz
 
 For arm64
 cd
-wget https://github.com/massalabs/massa/releases/download/MAIN.2.0/massa_MAIN.2.0_release_linux_arm64.tar.gz
-tar -xvf massa_MAIN.2.0_release_linux_arm64.tar.gz
-rm massa_MAIN.2.0_release_linux_arm64.tar.gz
+wget https://github.com/massalabs/massa/releases/download/MAIN.2.1/massa_MAIN.2.1_release_linux_arm64.tar.gz
+tar -xvf massa_MAIN.2.1_release_linux_arm64.tar.gz
+rm massa_MAIN.2.1_release_linux_arm64.tar.gz
 ```
 
 Bir defaya mahsus cüzdanımızı import edelim. Clienti ilk çalıştırma esnasında cüzdan şifremizi oluşturalım ve saklayalım.
@@ -90,7 +90,7 @@ updateMassa.sh
 #!/bin/bash
 
 architectureSelector=0 #If your system has arm64 architecture set this to 1. If amd64 leave this as 0. This script assumes user using linux based OS.
-releaseVersionTag=MAIN.2.0 #Enter latest version. You can check and copy latest version tag at https://github.com/massalabs/massa/releases
+releaseVersionTag=MAIN.2.1 #Enter latest version. You can check and copy latest version tag at https://github.com/massalabs/massa/releases
 sudo systemctl stop massad
 cd
 mkdir massa-update-temporary-folder
