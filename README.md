@@ -79,7 +79,7 @@ buy_rolls cüzdan_adtesi roll_adedi 0
 ```
 
 # Güncelleme
-Bunun için basit bir script hazırladım. Script içerisinde iki değişken mevcut birincisi `architectureSelector` `0` değerini atarsanız `amd64` versiyonu için `1` değerini atarsanız `arm64` için güncelleme yapar. Diğer değişken ise versiyon değişkeni. En güncel versiyonu https://github.com/massalabs/massa/releases adresinde bulabilirsiniz yeşil `latest` yazısının yanındaki release başlığını script içerisinde `releaseVersionTag` karşısına yazın. Şuan için en güncel versiyon `MAIN.2.0`. Script `massa` klasörünün `home` lokasyonunda olduğunu varsayıyor eğer farklı ise ona göre düzenleyebilirsiniz. Aşağıdaki komutlarla script dosyasını oluşturun ve içeriği yapıştırın.
+Bunun için basit bir script hazırladım. Script içerisinde iki değişken mevcut birincisi `architectureSelector` `0` değerini atarsanız `amd64` versiyonu için `1` değerini atarsanız `arm64` için güncelleme yapar. Diğer değişken ise versiyon değişkeni. En güncel versiyonu https://github.com/massalabs/massa/releases adresinde bulabilirsiniz yeşil `latest` yazısının yanındaki release başlığını script içerisinde `releaseVersionTag` karşısına yazın. Şuan için en güncel versiyon `MAIN.2.1`. Script `massa` klasörünün `home` lokasyonunda olduğunu varsayıyor eğer farklı ise ona göre düzenleyebilirsiniz. Aşağıdaki komutlarla script dosyasını oluşturun ve içeriği yapıştırın.
 ```
 touch updateMassa.sh
 sudo chmod +x updateMassa.sh
