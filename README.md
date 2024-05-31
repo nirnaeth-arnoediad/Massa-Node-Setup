@@ -7,17 +7,17 @@ Massa-Node Sistem Servisi Olarak Kurulumu ve Roll Otomasyonu. Kurulum Ubuntu 22.
 For amd64
 ```
 cd
-wget https://github.com/massalabs/massa/releases/download/MAIN.2.1/massa_MAIN.2.1_release_linux.tar.gz
-tar -xvf massa_MAIN.2.1_release_linux.tar.gz
-rm massa_MAIN.2.1_release_linux.tar.gz
+wget https://github.com/massalabs/massa/releases/download/MAIN.2.2/massa_MAIN.2.2_release_linux.tar.gz
+tar -xvf massa_MAIN.2.2_release_linux.tar.gz
+rm massa_MAIN.2.2_release_linux.tar.gz
 ```
 
 For arm64
 ```
 cd
-wget https://github.com/massalabs/massa/releases/download/MAIN.2.1/massa_MAIN.2.1_release_linux_arm64.tar.gz
-tar -xvf massa_MAIN.2.1_release_linux_arm64.tar.gz
-rm massa_MAIN.2.1_release_linux_arm64.tar.gz
+wget https://github.com/massalabs/massa/releases/download/MAIN.2.2/massa_MAIN.2.2_release_linux_arm64.tar.gz
+tar -xvf massa_MAIN.2.2_release_linux_arm64.tar.gz
+rm massa_MAIN.2.2_release_linux_arm64.tar.gz
 ```
 
 Bir defaya mahsus cüzdanımızı import edelim. Clienti ilk çalıştırma esnasında cüzdan şifremizi oluşturalım ve saklayalım.
@@ -80,43 +80,6 @@ Aşağıdaki komut ile de bakiyenize göre istediğiniz miktarda roll alabilirsi
 ```
 buy_rolls cüzdan_adtesi roll_adedi 0
 ```
-
-# Güncelleme
-Bunun için basit bir script hazırladım. Script içerisinde iki değişken mevcut birincisi `architectureSelector` `0` değerini atarsanız `amd64` versiyonu için `1` değerini atarsanız `arm64` için güncelleme yapar. Diğer değişken ise versiyon değişkeni. En güncel versiyonu https://github.com/massalabs/massa/releases adresinde bulabilirsiniz yeşil `latest` yazısının yanındaki release başlığını script içerisinde `releaseVersionTag` karşısına yazın. Şuan için en güncel versiyon `MAIN.2.1`. Script `massa` klasörünün `home` lokasyonunda olduğunu varsayıyor eğer farklı ise ona göre düzenleyebilirsiniz. Aşağıdaki komutlarla script dosyasını oluşturun ve içeriği yapıştırın.
-```
-touch updateMassa.sh
-sudo chmod +x updateMassa.sh
-nano updateMassa.sh
-```
-updateMassa.sh
-```
-#!/bin/bash
-
-architectureSelector=0 #If your system has arm64 architecture set this to 1. If amd64 leave this as 0. This script assumes user using linux based OS.
-releaseVersionTag=MAIN.2.1 #Enter latest version. You can check and copy latest version tag at https://github.com/massalabs/massa/releases
-sudo systemctl stop massad
-cd
-mkdir massa-update-temporary-folder
-cd massa-update-temporary-folder
-if [[ "$architectureSelector" -eq 1 ]]; then
-        wget https://github.com/massalabs/massa/releases/download/${releaseVersionTag}/massa_${releaseVersionTag}_release_linux_arm64.tar.gz
-        tar -xvf massa_${releaseVersionTag}_release_linux_arm64.tar.gz
-else
-        wget https://github.com/massalabs/massa/releases/download/${releaseVersionTag}/massa_${releaseVersionTag}_release_linux.tar.gz
-        tar -xvf massa_${releaseVersionTag}_release_linux.tar.gz
-fi
-cd massa/massa-node
-cp massa-node ~/massa/massa-node/
-cd ..
-cd massa-client
-cp massa-client ~/massa/massa-client/
-cd
-sudo rm -rf massa-update-temporary-folder
-sudo systemctl restart massad
-sudo journalctl -u massad -f -o cat
-```
-Ne zaman bir güncelleme gelirse `./updateMassa.sh` komutu ile node güncelleyebilirsiniz bu komut node'u durdurur güncellemeyi yapar ve geri çalıştırır. Sadece bu kurulum ile uyumludur.
-
 
 # Node kurulumu tamamlanmıştır. Opsiyonel olarak roll sayısını otomatik kontrol eden bir script hazırladım isteyenler bunu da devreye alabilir. Birçok kez test ettim herhangi bir sorun yaşamadım. Lütfen siz de inceleyin eksik veya yanlış gördüğünüz yerlerde katkıda bulunmaktan çekinmeyin. Script bir probleme yol açarsa sorumluluk size aittir.
 
