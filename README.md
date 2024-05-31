@@ -180,7 +180,7 @@ dinamikIPScript:
 ```
 #!/usr/bin/env bash
 Path=/home/nirnaeth/massa/massa-node/config # Your config.toml path
-myIP=$(curl -s ident.me)
+myIP=$(curl https://ipinfo.io/ip)
 nodeIP=$(cat $Path/config.toml | grep "routable_ip" | egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|([0-9a-z]{4})(:[0-9a-z]{0,4}){1,7}')
 if [ "$myIP" == "$nodeIP" ]
 then 
