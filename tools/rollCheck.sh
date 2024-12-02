@@ -1,64 +1,81 @@
 #!/bin/bash
 
+GREEN='\033[0;32m'
+LIGHTBLUE='\033[1;33m'
+LIGHTCYAN='\033[1;36m'
+LIGHTRED='\033[1;31m'
+
 # Change to the massa-client directory and specify variables
+
 cd /$HOME/massa/massa-client/ # Your path to massa-client
-wallet_password=12345 # Your wallet password
-wallet_address=AU1RdSuQrBKVpoyLNjtccZER3jkmHq3WgNQVHFJNqenUaapJeWW2 # Your wallet address
-target_roll_amount=0 # If target roll amount is 0 script try to buy rolls as much as possible
-roll_amount_to_buy=0
+wallet_password=xxxxx # Your wallet password
 
 # Run the wallet_info command and extract the active rolls value
+
 output=$("./massa-client" -p $wallet_password wallet_info)
-active_rolls=$(echo "$output" | awk '/Rolls:/{print $2}' | sed 's/.*=//' | sed 's/.$//')
-candidate_rolls=$(echo "$output" | awk '/Rolls:/{print $NF}' | cut -d= -f2)
-candidate_balance=$(echo "$output" | awk '/Balance:/{print $NF}' | cut -d= -f2 | cut -f1 -d".")
-possible_rolls="$((candidate_balance/100))"
+
+wallet_address1=$(echo "$output" | awk 'FNR == 2 {print $2}')
+active_rolls1=$(echo "$output" | awk 'FNR == 4 {print $2}' | sed 's/.*=//' | sed 's/.$//')
+candidate_rolls1=$(echo "$output" | awk 'FNR == 4 {print $4}' | sed 's/.*=//')
+candidate_balance1=$(echo "$output" | awk  'FNR == 3 {print $3}' | sed 's/.*=//' | cut -f1 -d".")
+possible_rolls1="$((candidate_balance1/100))"
+
+# wallet_address2=$(echo "$output" | awk 'FNR == 6 {print $2}')
+# active_rolls2=$(echo "$output" | awk 'FNR == 8 {print $2}' | sed 's/.*=//' | sed 's/.$//')
+# candidate_rolls2=$(echo "$output" | awk 'FNR == 8 {print $4}' | sed 's/.*=//')
+# candidate_balance2=$(echo "$output" | awk  'FNR == 7 {print $3}' | sed 's/.*=//' | cut -f1 -d".")
+# possible_rolls2="$((candidate_balance2/100))"
+
+# wallet_address3=$(echo "$output" | awk 'FNR == 10 {print $2}')
+# active_rolls3=$(echo "$output" | awk 'FNR == 12 {print $2}' | sed 's/.*=//' | sed 's/.$//')
+# candidate_rolls3=$(echo "$output" | awk 'FNR == 12 {print $4}' | sed 's/.*=//')
+# candidate_balance3=$(echo "$output" | awk  'FNR == 11 {print $3}' | sed 's/.*=//' | cut -f1 -d".")
+# possible_rolls3="$((candidate_balance3/100))"
+
 roll_cost=100
 
 # Append the cron command result to the cron.log file
 echo "" >> /$HOME/rollCheckScript.log
-echo "$(date): Active Rolls: $active_rolls" >> /$HOME/rollCheckScript.log
-echo "$(date): Candidate Rolls: $candidate_rolls" >> /$HOME/rollCheckScript.log
-echo "$(date): Candidate Balance: $candidate_balance" >> /$HOME/rollCheckScript.log
-echo "$(date): Possible Rolls: $possible_rolls" >> /$HOME/rollCheckScript.log
+echo -e "${GREEN}$(date): Wallet Address: $wallet_address1" >> /$HOME/rollCheckScript.log
+echo "$(date): Active Rolls: $active_rolls1" >> /$HOME/rollCheckScript.log
+echo "$(date): Candidate Rolls: $candidate_rolls1" >> /$HOME/rollCheckScript.log
+echo "$(date): Candidate Balance: $candidate_balance1" >> /$HOME/rollCheckScript.log
+echo "$(date): Possible Rolls: $possible_rolls1" >> /$HOME/rollCheckScript.log
+echo "" >> /$HOME/rollCheckScript.log
+
+# echo -e "${LIGHTBLUE}$(date): Wallet Address: $wallet_address2" >> /$HOME/rollCheckScript.log
+# echo "$(date): Active Rolls: $active_rolls2" >> /$HOME/rollCheckScript.log
+# echo "$(date): Candidate Rolls: $candidate_rolls2" >> /$HOME/rollCheckScript.log
+# echo "$(date): Candidate Balance: $candidate_balance2" >> /$HOME/rollCheckScript.log
+# echo "$(date): Possible Rolls: $possible_rolls2" >> /$HOME/rollCheckScript.log
+# echo "" >> /$HOME/rollCheckScript.log
+
+# echo -e "${LIGHTRED}$(date): Wallet Address: $wallet_address3" >> /$HOME/rollCheckScript.log
+# echo "$(date): Active Rolls: $active_rolls3" >> /$HOME/rollCheckScript.log
+# echo "$(date): Candidate Rolls: $candidate_rolls3" >> /$HOME/rollCheckScript.log
+# echo "$(date): Candidate Balance: $candidate_balance3" >> /$HOME/rollCheckScript.log
+# echo "$(date): Possible Rolls: $possible_rolls3" >> /$HOME/rollCheckScript.log
+# echo "" >> /$HOME/rollCheckScript.log
 
 # Buy possible rolls all the time
-if [[ "$target_roll_amount" -eq 0 ]]; then
-	if [[ "$candidate_balance" -ge "$roll_cost" ]]; then
 
-		"./massa-client" -p $wallet_password buy_rolls $wallet_address $possible_rolls 0
-		echo "$(date): $possible_rolls Rolls bought!" >> /$HOME/rollCheckScript.log
+if [[ "$candidate_balance1" -ge "$roll_cost" ]]; then
 
-	fi
+       "./massa-client" -p $wallet_password buy_rolls $wallet_address1 $possible_rolls1 0.01
+       echo -e "${LIGHTCYAN}$(date): $possible_rolls1 Rolls bought for $wallet_address1" >> /$HOME/rollCheckScript.log
+
 fi
 
-# Check roll status with target roll amount
-if [[ "$target_roll_amount" -ne 0 ]]; then
-	if [[ "$target_roll_amount" -gt "$candidate_rolls" ]]; then
-		if [[ "$active_rolls" -eq 0 ]]; then
+# if [[ "$candidate_balance2" -ge "$roll_cost" ]]; then
 
-			# Looks like rolls are sold. Re-buying...
-			"./massa-client" -p $wallet_password buy_rolls $wallet_address $target_roll_amount 0
-		 	echo "$(date): $target_roll_amount Rolls bought!" >> /$HOME/rollCheckScript.log
+#        "./massa-client" -p $wallet_password buy_rolls $wallet_address2 $possible_rolls2 0.01
+#        echo "$(date): $possible_rolls2 Rolls bought for $wallet_address2" >> /$HOME/rollCheckScript.log
 
-		fi
+#fi
 
-		if [[ "$candidate_rolls" -ne 0 ]]; then
+#if [[ "$candidate_balance3" -ge "$roll_cost" ]]; then
 
-			echo "$(date): Target Roll Amount: $target_roll_amount" >> /$HOME/rollCheckScript.log
-		        roll_amount_to_buy="$((target_roll_amount-candidate_rolls))"
+#       "./massa-client" -p $wallet_password buy_rolls $wallet_address3 $possible_rolls3 0.01
+#      echo "$(date): $possible_rolls3 Rolls bought for $wallet_address3" >> /$HOME/rollCheckScript.log
 
-			if [[ "$roll_amount_to_buy" -gt "$possible_rolls" ]]; then
-
-				echo "$(date): Target roll amount is too high. Please lower your target acording to your unlocked balance" >> /$HOME/rollCheckScript.log
-
-			else
-
-				# Increase roll amount to reach target.
-	   			"./massa-client" -p $wallet_password buy_rolls $wallet_address $roll_amount_to_buy 0
-   				echo "$(date): $roll_amount_to_buy Rolls bought!" >> /$HOME/rollCheckScript.log
-
-			fi
-		fi
-	fi
-fi
+#fi
