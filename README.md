@@ -7,17 +7,17 @@ Massa-Node Sistem Servisi Olarak Kurulumu ve Roll Otomasyonu. Kurulum Ubuntu 22.
 For amd64
 ```
 cd
-wget https://github.com/massalabs/massa/releases/download/MAIN.2.2/massa_MAIN.2.2_release_linux.tar.gz
-tar -xvf massa_MAIN.2.2_release_linux.tar.gz
-rm massa_MAIN.2.2_release_linux.tar.gz
+wget https://github.com/massalabs/massa/releases/download/MAIN.2.4/massa_MAIN.2.4_release_linux.tar.gz
+tar -xvf massa_MAIN.2.4_release_linux.tar.gz
+rm massa_MAIN.2.4_release_linux.tar.gz
 ```
 
 For arm64
 ```
 cd
-wget https://github.com/massalabs/massa/releases/download/MAIN.2.2/massa_MAIN.2.2_release_linux_arm64.tar.gz
-tar -xvf massa_MAIN.2.2_release_linux_arm64.tar.gz
-rm massa_MAIN.2.2_release_linux_arm64.tar.gz
+wget https://github.com/massalabs/massa/releases/download/MAIN.2.4/massa_MAIN.2.4_release_linux_arm64.tar.gz
+tar -xvf massa_MAIN.2.4_release_linux_arm64.tar.gz
+rm massa_MAIN.2.4_release_linux_arm64.tar.gz
 ```
 
 Bir defaya mahsus cüzdanımızı import edelim. Clienti ilk çalıştırma esnasında cüzdan şifremizi oluşturalım ve saklayalım.
